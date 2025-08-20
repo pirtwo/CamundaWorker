@@ -1,0 +1,9 @@
+services:
+  camunda:
+    restart: unless-stopped
+
+  worker:
+    restart: unless-stopped
+
+  mysql:
+    ports: [] # no host exposure in prod

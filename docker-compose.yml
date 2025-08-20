@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=camunda
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - app_net
+
+  camunda:
+    build:
+      context: ./camunda
+      dockerfile: Dockerfile
+    environment:
+      - DB_DRIVER=com.mysql.cj.jdbc.Driver
+      - DB_URL=jdbc:mysql://mysql:3306/camunda
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - WAIT_FOR=mysql:3306
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/ || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    networks:
+      - app_net
+
+  worker:
+    build:
+      context: ./worker
+      dockerfile: Dockerfile
+    environment:
+      - CAMUNDA_REST_URL=http://camunda:8080/engine-rest
+    depends_on:
+      camunda:
+        condition: service_healthy
+    networks:
+      - app_net
+
+networks:
+  app_net:

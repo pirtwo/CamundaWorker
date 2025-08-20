@@ -1,0 +1,25 @@
+services:
+  camunda:
+    build:
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./camunda/models:/models:ro
+      - ./camunda/deploy-models.sh:/docker-entrypoint-init.d/deploy-models.sh:ro
+      - ./camunda/config/web.xml:/camunda/webapps/engine-rest/WEB-INF/web.xml
+      - ./camunda/config/bpm-platform.xml:/camunda/conf/bpm-platform.xml
+
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./worker:/app
+      - /app/node_modules
+    command: npm run dev
+
+  mysql:
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql

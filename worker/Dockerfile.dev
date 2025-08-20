@@ -1,0 +1,23 @@
+# Dev Node.js worker with hot-reload
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install deps including devDependencies (nodemon, eslint, etc.)
+COPY package*.json ./
+RUN npm install
+
+# Copy source (note: bind-mounts in dev-compose will override this)
+COPY . .
+
+# Improve file-watching reliability across bind mounts (Windows/WSL2)
+ENV NODE_ENV=development
+ENV CHOKIDAR_USEPOLLING=1
+ENV WATCHPACK_POLLING=true
+ENV TZ=Asia/Tehran
+
+# Optional: install tzdata so TZ actually applies on Alpine
+RUN apk add --no-cache tzdata
+
+# Hot-reload entry (match your actual main file in src/)
+CMD ["npx", "nodemon", "--legacy-watch", "src/main.js"]
