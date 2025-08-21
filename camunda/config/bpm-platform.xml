@@ -35,17 +35,6 @@
         <class>org.camunda.connect.plugin.impl.ConnectProcessEnginePlugin</class>
       </plugin>
 
-      <plugin>
-        <class>org.camunda.bpm.engine.impl.plugin.AdministratorUserPlugin</class>
-        <properties>
-          <property name="adminUserId">demo</property>
-          <property name="adminPassword">demo</property>
-          <property name="adminFirstName">demo</property>
-          <property name="adminLastName">demo</property>
-          <property name="adminEmail">demo@example.com</property>
-        </properties>
-      </plugin>
-
     <!-- LDAP CONFIGURATION -->
     <!-- Uncomment this section in order to enable LDAP support for this process engine -->
     <!-- Adjust configuration, see ( http://docs.camunda.org/latest/guides/user-guide/#process-engine-identity-service-the-ldap-identity-service ) -->

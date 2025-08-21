@@ -7,7 +7,6 @@ COPY ./config/web.xml /camunda/webapps/engine-rest/WEB-INF/web.xml
 
 COPY ./config/bpm-platform.xml /camunda/conf/bpm-platform.xml
 
-# Optional: align container timezone; remove if you prefer UTC
 ENV TZ=Asia/Tehran
 
 EXPOSE 8080
