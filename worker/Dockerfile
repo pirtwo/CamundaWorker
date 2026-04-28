@@ -1,5 +1,5 @@
 # Production Node.js worker (lean, non-root)
-FROM node:20-alpine
+FROM mirror-docker.runflare.com/node:20-alpine
 
 WORKDIR /app
 
@@ -12,8 +12,8 @@ COPY . .
 
 # Optional: set timezone; needs tzdata on Alpine
 # If you prefer UTC, remove the next two lines
-RUN apk add --no-cache tzdata
-ENV TZ=Asia/Tehran
+#RUN apk add --no-cache tzdata
+#ENV TZ=Asia/Tehran
 
 # Env for runtime
 ENV NODE_ENV=production
